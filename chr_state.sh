@@ -1,14 +1,12 @@
 #!/bin/bash
 
-spad=/path/to/SPAD/Analysis/MergeBed
-lad=/path/to/LAD/Analysis/MergeBed
 
 mkdir -p tmp
 
 for n in h8C hM hB hESC hPFC
 do
 	### LAD
-	bedtools intersect -a ~/SD1/reference/hg19/hg19.chrnoXY.bs100k.bed -b ${n}.L.Merge_bed.noXY.bed -v > tmp/${n}_nonLADs.bs100k.bed
+	bedtools intersect -a /reference/hg19/hg19.chrnoXY.bs100k.bed -b ${n}.L.Merge_bed.noXY.bed -v > tmp/${n}_nonLADs.bs100k.bed
 	bedtools makewindows -b ${n}.L.Merge_bed.noXY.bed -w 100000 > tmp/${n}.L.Merge_bed.noXY.bs100k.bed
 	awk -v OFS="\t" '{print $0,0}' tmp/${n}_nonLADs.bs100k.bed > tmp/${n}_nonLADs.bs100k.0.bed
 	awk -v OFS="\t" '{print $0,1}' tmp/${n}.L.Merge_bed.noXY.bs100k.bed > tmp/${n}.L.Merge_bed.noXY.bs100k.1.bed
